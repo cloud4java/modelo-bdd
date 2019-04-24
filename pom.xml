@@ -36,7 +36,7 @@
                 <version>2.22.0</version>
 
                 <configuration>
-                    <argLine>-Xmx8g</argLine>
+
                     <includes>
                         <!--                        <include>**/*IT.java</include>-->
                         <include>**/*Runner.java</include>

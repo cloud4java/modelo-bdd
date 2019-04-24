@@ -1,11 +1,7 @@
 package bdd.steps;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import cucumber.api.java8.En;
 import cucumber.api.junit.Cucumber;
-import io.cucumber.datatable.DataTable;
 import org.junit.runner.RunWith;
 
 import java.util.List;
