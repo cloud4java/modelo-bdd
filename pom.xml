@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.springframework</groupId>
+    <artifactId>modelo-bdd</artifactId>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+    <name>Spring Boot Docker</name>
+    <description>Getting started with Spring Boot and Docker</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.5.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <docker.image.prefix>springio</docker.image.prefix>
+        <java.version>1.8</java.version>
+        <maven.failsafe.version>2.22.0</maven.failsafe.version>
+        <cucumber.version>4.2.6</cucumber.version>
+        <!--<cucumber.version>1.2.5</cucumber.version>-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+
+            <!-- INTEGRATION TEST -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.0</version>
+
+                <configuration>
+                    <argLine>-Xmx8g</argLine>
+                    <includes>
+                        <!--                        <include>**/*IT.java</include>-->
+                        <include>**/*Runner.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>execution1</id>
+                        <phase>test</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>verify</goal>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- tag::plugin[] -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.3.6</version>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                </configuration>
+            </plugin>
+            <!-- end::plugin[] -->
+
+            <!-- tag::unpack[] -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- end::unpack[] -->
+        </plugins>
+    </build>
+    <!--
+        <profiles>
+            &lt;!&ndash;Profile para testes integrados - Integration Tests&ndash;&gt;
+            <profile>
+                <id>IT</id>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-failsafe-plugin</artifactId>
+                            <version>${maven.failsafe.version}</version>
+                        </plugin>
+
+                        &lt;!&ndash; Maven Failsafe Plugin &ndash;&gt;
+                        <plugin>
+                            <artifactId>maven-failsafe-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>integration-test</goal>
+                                        <goal>verify</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </build>
+
+            </profile>
+        </profiles>
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+<!--        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-java8</artifactId>
+            <version>4.2.6</version>
+            <scope>test</scope>
+        </dependency>-->
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java8</artifactId>
+            <version>4.2.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
